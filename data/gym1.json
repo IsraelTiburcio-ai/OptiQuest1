@@ -1,0 +1,290 @@
+{
+  "meta": {
+    "name": "OptiQuest - Gimnasio de Sistemas",
+    "gym": "Gimnasio 1 - Introducción a la Teoría General de Sistemas",
+    "version": "1.0.0"
+  },
+  "player": {
+    "name": "Aprendiz",
+    "maxHp": 50,
+    "attack": 10
+  },
+  "zones": [
+    {
+      "id": "intro_sistemas",
+      "title": "¿Qué es un sistema?",
+      "npc": "Profa Sistemas",
+      "mapColor": "#3aa856",
+      "dialogue": [
+        "Bienvenida al Gimnasio de Sistemas. Yo soy la Profa Sistemas.",
+        "Un sistema es un conjunto de elementos relacionados entre sí que interactúan para un propósito.",
+        "Para entender un sistema debes observar sus partes, sus relaciones y su propósito.",
+        "Si crees estar lista, demuéstralo enfrentando al Caos Inicial."
+      ],
+      "enemy": {
+        "name": "Caos Inicial",
+        "hp": 30,
+        "color": "#b04848"
+      },
+      "victoryDialogue": [
+        "¡Excelente! Has entendido qué es un sistema.",
+        "Sigue adelante: el Guardián de Componentes te espera más arriba."
+      ],
+      "questions": [
+        {
+          "question": "¿Cuál opción describe mejor un sistema?",
+          "options": [
+            "Un conjunto de elementos relacionados que interactúan",
+            "Una variable aislada sin relación con nada",
+            "Una fórmula matemática sin contexto",
+            "Una lista de números al azar"
+          ],
+          "answer": 0,
+          "feedbackCorrect": "¡Correcto! Un sistema integra elementos que interactúan entre sí.",
+          "feedbackWrong": "Recuerda: un sistema necesita elementos que se relacionan e interactúan."
+        },
+        {
+          "question": "Para entender un sistema es clave observar...",
+          "options": [
+            "Solo el color de sus partes",
+            "Sus partes, relaciones y propósito",
+            "Únicamente su precio",
+            "Nada, los sistemas no se entienden"
+          ],
+          "answer": 1,
+          "feedbackCorrect": "¡Correcto! Partes, relaciones y propósito son la base.",
+          "feedbackWrong": "Lo esencial son las partes, las relaciones entre ellas y su propósito común."
+        },
+        {
+          "question": "¿Un sistema puede existir sin relaciones entre sus elementos?",
+          "options": [
+            "Sí, siempre y cuando haya muchos elementos",
+            "No, las relaciones son esenciales para que sea sistema",
+            "Solo si los elementos son grandes",
+            "Solo si está cerrado"
+          ],
+          "answer": 1,
+          "feedbackCorrect": "¡Correcto! Sin relaciones no hay sistema.",
+          "feedbackWrong": "Sin relaciones entre elementos no podemos hablar de sistema."
+        },
+        {
+          "question": "El propósito de un sistema se refiere a...",
+          "options": [
+            "Su tamaño físico",
+            "La meta u objetivo para el que fue formado",
+            "El material del que está hecho",
+            "El nombre que recibe"
+          ],
+          "answer": 1,
+          "feedbackCorrect": "¡Correcto! El propósito es el objetivo común del sistema.",
+          "feedbackWrong": "El propósito es la meta u objetivo que el sistema persigue."
+        }
+      ]
+    },
+    {
+      "id": "componentes",
+      "title": "Componentes del sistema",
+      "npc": "Guardián de Componentes",
+      "mapColor": "#3a8ac8",
+      "dialogue": [
+        "Yo soy el Guardián de Componentes.",
+        "Todo sistema tiene: entrada, proceso, salida, retroalimentación y ambiente.",
+        "La entrada es lo que ingresa, el proceso lo transforma, la salida es el resultado.",
+        "La retroalimentación ajusta el sistema; el ambiente es todo lo que lo rodea.",
+        "Demuestra que dominas los componentes venciendo al Olvido."
+      ],
+      "enemy": {
+        "name": "Olvido",
+        "hp": 40,
+        "color": "#7048b0"
+      },
+      "victoryDialogue": [
+        "¡Bien hecho! Ya dominas los componentes del sistema.",
+        "El Líder del Gimnasio te espera para la prueba final."
+      ],
+      "questions": [
+        {
+          "question": "¿Qué es la entrada de un sistema?",
+          "options": [
+            "El resultado final del sistema",
+            "Lo que ingresa al sistema para ser procesado",
+            "El ajuste del sistema",
+            "El entorno que rodea al sistema"
+          ],
+          "answer": 1,
+          "feedbackCorrect": "¡Correcto! La entrada es lo que ingresa al sistema.",
+          "feedbackWrong": "La entrada son los elementos o datos que ingresan al sistema para ser procesados."
+        },
+        {
+          "question": "El proceso dentro de un sistema se encarga de...",
+          "options": [
+            "Recibir el entorno",
+            "Transformar la entrada en salida",
+            "Medir el resultado",
+            "Detener el sistema"
+          ],
+          "answer": 1,
+          "feedbackCorrect": "¡Correcto! El proceso transforma la entrada en salida.",
+          "feedbackWrong": "El proceso transforma la entrada para producir una salida."
+        },
+        {
+          "question": "¿Qué es la salida de un sistema?",
+          "options": [
+            "El resultado que el sistema entrega tras el proceso",
+            "Lo que ingresa al sistema",
+            "Un error del sistema",
+            "El entorno externo"
+          ],
+          "answer": 0,
+          "feedbackCorrect": "¡Correcto! La salida es el resultado entregado.",
+          "feedbackWrong": "La salida es el resultado que el sistema entrega después del proceso."
+        },
+        {
+          "question": "La retroalimentación sirve para...",
+          "options": [
+            "Decorar el sistema",
+            "Ajustar el funcionamiento con base en los resultados",
+            "Aumentar el tamaño del sistema",
+            "Cerrar el sistema para siempre"
+          ],
+          "answer": 1,
+          "feedbackCorrect": "¡Correcto! La retroalimentación ajusta el sistema según sus resultados.",
+          "feedbackWrong": "La retroalimentación usa la información de la salida para ajustar el sistema."
+        },
+        {
+          "question": "¿Qué es el ambiente de un sistema?",
+          "options": [
+            "El resultado final del sistema",
+            "El conjunto de elementos y procesos internos",
+            "El entorno externo que rodea al sistema",
+            "El propósito del sistema"
+          ],
+          "answer": 2,
+          "feedbackCorrect": "¡Correcto! El ambiente es el entorno que rodea al sistema.",
+          "feedbackWrong": "El ambiente es todo lo que rodea al sistema y con lo que interactúa."
+        },
+        {
+          "question": "Un sistema abierto se diferencia de uno cerrado en que...",
+          "options": [
+            "El abierto intercambia materia/energía con el ambiente, el cerrado no",
+            "El abierto es más grande",
+            "El cerrado tiene más componentes",
+            "No hay diferencia real"
+          ],
+          "answer": 0,
+          "feedbackCorrect": "¡Correcto! Los sistemas abiertos intercambian con el ambiente.",
+          "feedbackWrong": "Un sistema abierto intercambia materia/energía/información con el ambiente; el cerrado, no."
+        }
+      ]
+    },
+    {
+      "id": "lider",
+      "title": "Prueba final del Gimnasio",
+      "npc": "Líder del Gimnasio",
+      "mapColor": "#b09030",
+      "dialogue": [
+        "Yo soy el Líder del Gimnasio.",
+        "Has llegado lejos, pero la prueba final integra todo: subsistemas, suprasistemas y el mejoramiento frente al diseño.",
+        "Un subsistema es parte de un sistema mayor; un suprasistema lo contiene.",
+        "Mejorar busca optimizar un sistema existente; diseñar busca crear uno nuevo.",
+        "¡Demuestra tu dominio y conviértete en Maestra de Sistemas!"
+      ],
+      "enemy": {
+        "name": "Entropía Final",
+        "hp": 50,
+        "color": "#c84030"
+      },
+      "victoryDialogue": [
+        "¡Increíble! Has vencido al Gimnasio de Sistemas.",
+        "Ahora comprendes qué es un sistema, sus componentes y sus relaciones.",
+        "Eres oficialmente una Maestra de Sistemas. ¡Felicidades!"
+      ],
+      "questions": [
+        {
+          "question": "¿Qué es un subsistema?",
+          "options": [
+            "Un sistema que contiene a otros sistemas",
+            "Una parte de un sistema más grande",
+            "El ambiente externo",
+            "El propósito del sistema"
+          ],
+          "answer": 1,
+          "feedbackCorrect": "¡Correcto! Un subsistema es parte de un sistema mayor.",
+          "feedbackWrong": "Un subsistema es un sistema que forma parte de un sistema más grande."
+        },
+        {
+          "question": "¿Qué es un suprasistema?",
+          "options": [
+            "Una parte pequeña de un sistema",
+            "Un sistema que contiene a otros sistemas",
+            "La salida de un sistema",
+            "Un tipo de retroalimentación"
+          ],
+          "answer": 1,
+          "feedbackCorrect": "¡Correcto! El suprasistema contiene a otros sistemas.",
+          "feedbackWrong": "Un suprasistema es el sistema mayor que contiene a otros sistemas (subsistemas)."
+        },
+        {
+          "question": "Mejorar un sistema consiste en...",
+          "options": [
+            "Crear un sistema totalmente nuevo desde cero",
+            "Optimizar un sistema que ya existe",
+            "Eliminar el ambiente del sistema",
+            "Quitar la retroalimentación"
+          ],
+          "answer": 1,
+          "feedbackCorrect": "¡Correcto! Mejorar optimiza un sistema existente.",
+          "feedbackWrong": "Mejorar busca optimizar un sistema que ya existe para que funcione mejor."
+        },
+        {
+          "question": "Diseñar un sistema consiste en...",
+          "options": [
+            "Optimizar un sistema ya existente",
+            "Crear un sistema nuevo para un propósito",
+            "Solo cambiar el color del sistema",
+            "Cerrar el sistema"
+          ],
+          "answer": 1,
+          "feedbackCorrect": "¡Correcto! Diseñar crea un sistema nuevo.",
+          "feedbackWrong": "Diseñar es crear un sistema nuevo desde su concepción para cumplir un propósito."
+        },
+        {
+          "question": "Si una escuela es un sistema, los grupos dentro de ella son...",
+          "options": [
+            "Suprasistemas",
+            "Subsistemas",
+            "Ambientes",
+            "Salidas"
+          ],
+          "answer": 1,
+          "feedbackCorrect": "¡Correcto! Los grupos son subsistemas de la escuela.",
+          "feedbackWrong": "Los grupos, al ser parte de la escuela (sistema mayor), son sus subsistemas."
+        },
+        {
+          "question": "Si una escuela es un sistema, el distrito escolar que la agrupa es...",
+          "options": [
+            "Un subsistema de la escuela",
+            "El ambiente interno",
+            "Un suprasistema que la contiene",
+            "La entrada del sistema"
+          ],
+          "answer": 2,
+          "feedbackCorrect": "¡Correcto! El distrito es el suprasistema.",
+          "feedbackWrong": "El distrito escolar contiene a la escuela, por eso es un suprasistema."
+        },
+        {
+          "question": "Diferencia clave entre mejorar y diseñar un sistema:",
+          "options": [
+            "Mejorar actúa sobre un sistema existente; diseñar crea uno nuevo",
+            "Son exactamente lo mismo",
+            "Mejorar crea uno nuevo; diseñar repara el existente",
+            "Ninguna, ambos eliminan el sistema"
+          ],
+          "answer": 0,
+          "feedbackCorrect": "¡Correcto! Mejorar = existe; diseñar = nuevo.",
+          "feedbackWrong": "Mejorar optimiza lo que ya existe; diseñar crea un sistema nuevo."
+        }
+      ]
+    }
+  ]
+}

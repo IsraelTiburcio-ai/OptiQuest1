@@ -1,0 +1,12 @@
+# OS / editor
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# Logs y temporales del servidor local
+*.log
+__pycache__/
+
+# Node (por si usas npx serve)
+node_modules/

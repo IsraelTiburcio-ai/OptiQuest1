@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="theme-color" content="#10131f" />
+  <meta name="description" content="OptiQuest: Gimnasio de Sistemas - mini RPG educativo sobre Teoría General de Sistemas." />
+  <title>OptiQuest - Gimnasio de Sistemas</title>
+
+  <!-- Retro fonts (con fallback a monospace). Liviano. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- Contenedor escalado: 360x640 lógicos, se escala al viewport con JS. -->
+  <div id="stage">
+    <div id="game-container">
+      <canvas id="game" width="360" height="640"></canvas>
+
+      <!-- ===== Pantalla de título ===== -->
+      <div id="title-screen" class="overlay">
+        <div class="title-art">
+          <h1 class="title-text">OptiQuest</h1>
+          <p class="subtitle">Gimnasio de Sistemas</p>
+          <p class="title-tag">MVP · Teoría General de Sistemas</p>
+        </div>
+        <div class="title-buttons">
+          <button id="btn-start" class="rpg-btn big">Iniciar aventura</button>
+          <button id="btn-continue" class="rpg-btn big hidden">Continuar</button>
+          <button id="btn-title-music" class="rpg-btn small">Música: ON</button>
+        </div>
+        <p class="title-hint">Toca "Iniciar aventura" para activar el audio.</p>
+      </div>
+
+      <!-- ===== Intro narrativa ===== -->
+      <div id="intro-screen" class="overlay hidden">
+        <div class="dialog-box intro-box">
+          <div class="speaker">Profa Sistemas</div>
+          <p id="intro-text" class="dialog-text"></p>
+          <div class="dialog-actions">
+            <button id="btn-intro-next" class="rpg-btn">Continuar ▸</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== Barra superior (música + pausa) ===== -->
+      <div id="top-controls" class="hidden">
+        <button id="btn-music" class="icon-btn" title="Música">♪</button>
+        <button id="btn-menu" class="icon-btn" title="Pausa">II</button>
+      </div>
+
+      <!-- ===== Caja de diálogo (mapa / NPCs) ===== -->
+      <div id="dialogue" class="hidden">
+        <div class="dialog-box">
+          <div id="dialogue-speaker" class="speaker"></div>
+          <p id="dialogue-text" class="dialog-text"></p>
+          <div class="dialog-actions">
+            <button id="btn-dialogue-next" class="rpg-btn">Continuar ▸</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== Controles del mapa (D-pad + A) ===== -->
+      <div id="map-controls" class="hidden">
+        <div id="dpad">
+          <button class="dpad-btn up" data-dir="up">▲</button>
+          <button class="dpad-btn left" data-dir="left">◀</button>
+          <button class="dpad-btn center" disabled>•</button>
+          <button class="dpad-btn right" data-dir="right">▶</button>
+          <button class="dpad-btn down" data-dir="down">▼</button>
+        </div>
+        <button id="btn-a" class="a-btn">A</button>
+      </div>
+
+      <!-- ===== UI de batalla ===== -->
+      <div id="battle-ui" class="hidden">
+        <div id="battle-answers">
+          <p id="battle-question" class="battle-question"></p>
+          <div class="answers-grid">
+            <button class="answer-btn" data-i="0"></button>
+            <button class="answer-btn" data-i="1"></button>
+            <button class="answer-btn" data-i="2"></button>
+            <button class="answer-btn" data-i="3"></button>
+          </div>
+        </div>
+        <div id="battle-feedback" class="hidden">
+          <p id="feedback-text" class="feedback-text"></p>
+          <button id="btn-feedback-next" class="rpg-btn">Continuar ▸</button>
+        </div>
+      </div>
+
+      <!-- ===== Menú / Pausa ===== -->
+      <div id="menu-screen" class="overlay hidden">
+        <div class="dialog-box">
+          <h2 class="box-title">Pausa</h2>
+          <p class="menu-line">Bayas: <span id="menu-bayas">0</span> 🫐</p>
+          <p class="menu-line">Progreso: <span id="menu-progress">0 / 3</span></p>
+          <div class="menu-buttons">
+            <button id="btn-resume" class="rpg-btn">Continuar</button>
+            <button id="btn-reset" class="rpg-btn danger">Reiniciar progreso</button>
+            <button id="btn-menu-title" class="rpg-btn small">Volver al título</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== Resultado (victoria / derrota) ===== -->
+      <div id="result-screen" class="overlay hidden">
+        <div class="dialog-box">
+          <h2 id="result-title" class="box-title"></h2>
+          <p id="result-text" class="result-text"></p>
+          <div class="menu-buttons">
+            <button id="btn-result" class="rpg-btn"></button>
+            <button id="btn-result-map" class="rpg-btn small hidden">Volver al mapa</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

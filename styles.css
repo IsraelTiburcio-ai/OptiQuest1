@@ -1,0 +1,513 @@
+/* ============================================================
+   OptiQuest - Gimnasio de Sistemas
+   Retro pixel-art styling. Mobile-first vertical.
+   360x640 lógicos escalados al viewport.
+   ============================================================ */
+
+:root {
+  --bg-0: #0b0f1a;
+  --bg-1: #10131f;
+  --ink: #e8eef7;
+  --ink-dim: #9fb0c8;
+  --accent: #6cf0a8;
+  --accent-2: #4d8cff;
+  --danger: #ff5a5a;
+  --gold: #ffce3a;
+  --panel: #1b2238;
+  --panel-2: #243054;
+  --border: #4d6a9e;
+  --border-light: #7da6d8;
+  --shadow: #05070d;
+  --pixel-font: "Press Start 2P", "Courier New", monospace;
+  --body-font: "VT323", "Courier New", monospace;
+}
+
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  background: var(--bg-0);
+  color: var(--ink);
+  overflow: hidden;
+  overscroll-behavior: none;
+  touch-action: none;
+  font-family: var(--body-font);
+  letter-spacing: 0.5px;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Stage centra el contenedor y lo escala manteniendo 360:640. */
+#stage {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background:
+    radial-gradient(circle at 50% 0%, #1a2236 0%, var(--bg-0) 70%);
+}
+
+/* El contenedor se escala vía transform desde JS. Internamente todo es 360x640. */
+#game-container {
+  position: relative;
+  width: 360px;
+  height: 640px;
+  transform-origin: center center;
+}
+
+#game {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 360px;
+  height: 640px;
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+  background: var(--bg-1);
+  border: 2px solid #2a3550;
+  box-shadow:
+    0 0 0 4px var(--shadow),
+    0 0 24px rgba(108, 240, 168, 0.12);
+  touch-action: none;
+}
+
+/* ===== Overlays genéricos ===== */
+.overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 18px;
+  background: rgba(8, 11, 20, 0.78);
+  z-index: 10;
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* ===== Tipografía retro ===== */
+.title-text {
+  font-family: var(--pixel-font);
+  font-size: 30px;
+  line-height: 1.2;
+  margin: 0;
+  color: var(--accent);
+  text-shadow:
+    3px 3px 0 #1a3a2a,
+    6px 6px 0 rgba(0, 0, 0, 0.5);
+  letter-spacing: 1px;
+}
+
+.subtitle {
+  font-family: var(--pixel-font);
+  font-size: 12px;
+  margin: 8px 0 0;
+  color: var(--border-light);
+  text-shadow: 2px 2px 0 var(--shadow);
+}
+
+.title-tag {
+  font-family: var(--body-font);
+  font-size: 18px;
+  margin: 4px 0 0;
+  color: var(--ink-dim);
+}
+
+.title-art {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.title-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  max-width: 260px;
+}
+
+.title-hint {
+  font-family: var(--body-font);
+  font-size: 16px;
+  color: var(--ink-dim);
+  text-align: center;
+  margin-top: 6px;
+  max-width: 280px;
+}
+
+/* ===== Botones RPG ===== */
+.rpg-btn {
+  font-family: var(--pixel-font);
+  font-size: 11px;
+  color: var(--ink);
+  background: var(--panel-2);
+  border: 3px solid var(--border);
+  padding: 12px 14px;
+  width: 100%;
+  cursor: pointer;
+  box-shadow:
+    0 4px 0 #2a3a5e,
+    inset 0 0 0 2px var(--panel);
+  text-shadow: 1px 1px 0 var(--shadow);
+  transition: transform 0.04s, box-shadow 0.04s;
+  letter-spacing: 0.5px;
+}
+
+.rpg-btn.big {
+  font-size: 12px;
+  padding: 14px;
+}
+
+.rpg-btn.small {
+  font-size: 9px;
+  padding: 9px 10px;
+}
+
+.rpg-btn:active {
+  transform: translateY(3px);
+  box-shadow:
+    0 1px 0 #2a3a5e,
+    inset 0 0 0 2px var(--panel);
+}
+
+.rpg-btn.danger {
+  border-color: #8e3a3a;
+  box-shadow:
+    0 4px 0 #4a1a1a,
+    inset 0 0 0 2px var(--panel);
+}
+
+/* ===== Caja de diálogo ===== */
+#dialogue {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 10px;
+  z-index: 9;
+}
+
+.dialog-box {
+  width: 100%;
+  max-width: 320px;
+  background: var(--panel);
+  border: 4px solid var(--border-light);
+  box-shadow:
+    0 0 0 3px var(--shadow),
+    inset 0 0 0 2px #2c3a5e;
+  padding: 14px;
+  color: var(--ink);
+}
+
+.intro-box {
+  max-width: 300px;
+}
+
+.speaker {
+  font-family: var(--pixel-font);
+  font-size: 10px;
+  color: var(--accent);
+  margin-bottom: 8px;
+  text-shadow: 1px 1px 0 var(--shadow);
+}
+
+.dialog-text {
+  font-family: var(--body-font);
+  font-size: 20px;
+  line-height: 1.25;
+  margin: 0 0 12px;
+  min-height: 80px;
+  color: var(--ink);
+}
+
+.dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.dialog-actions .rpg-btn {
+  width: auto;
+  min-width: 120px;
+}
+
+/* ===== Barra superior ===== */
+#top-controls {
+  position: absolute;
+  top: 8px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 8px;
+  z-index: 8;
+  pointer-events: none;
+}
+
+.icon-btn {
+  pointer-events: auto;
+  width: 38px;
+  height: 38px;
+  font-family: var(--pixel-font);
+  font-size: 12px;
+  color: var(--ink);
+  background: rgba(20, 27, 48, 0.85);
+  border: 3px solid var(--border);
+  box-shadow: 0 3px 0 var(--shadow);
+  cursor: pointer;
+  padding: 0;
+}
+
+.icon-btn:active {
+  transform: translateY(2px);
+  box-shadow: 0 1px 0 var(--shadow);
+}
+
+/* ===== Controles del mapa ===== */
+#map-controls {
+  position: absolute;
+  inset: 0;
+  z-index: 7;
+  pointer-events: none;
+}
+
+#dpad {
+  position: absolute;
+  left: 12px;
+  bottom: 14px;
+  width: 132px;
+  height: 132px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  gap: 4px;
+  pointer-events: auto;
+}
+
+.dpad-btn {
+  font-family: var(--pixel-font);
+  font-size: 12px;
+  color: var(--ink);
+  background: rgba(36, 48, 84, 0.9);
+  border: 3px solid var(--border);
+  box-shadow: 0 3px 0 var(--shadow);
+  cursor: pointer;
+  padding: 0;
+  touch-action: none;
+}
+
+.dpad-btn:active,
+.dpad-btn.pressed {
+  background: var(--accent-2);
+  transform: translateY(2px);
+  box-shadow: 0 1px 0 var(--shadow);
+}
+
+.dpad-btn.up { grid-column: 2; grid-row: 1; }
+.dpad-btn.left { grid-column: 1; grid-row: 2; }
+.dpad-btn.center {
+  grid-column: 2; grid-row: 2;
+  background: rgba(20, 27, 48, 0.6);
+  border-color: #2a3550;
+  color: var(--ink-dim);
+  box-shadow: none;
+  cursor: default;
+}
+.dpad-btn.right { grid-column: 3; grid-row: 2; }
+.dpad-btn.down { grid-column: 2; grid-row: 3; }
+
+#btn-a {
+  position: absolute;
+  right: 16px;
+  bottom: 30px;
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  font-family: var(--pixel-font);
+  font-size: 22px;
+  color: #fff;
+  background: var(--accent-2);
+  border: 4px solid #2a3a5e;
+  box-shadow:
+    0 5px 0 #1a2a4e,
+    inset 0 0 0 3px rgba(255, 255, 255, 0.15);
+  cursor: pointer;
+  pointer-events: auto;
+  touch-action: none;
+  text-shadow: 2px 2px 0 var(--shadow);
+}
+
+#btn-a:active {
+  transform: translateY(4px);
+  box-shadow:
+    0 1px 0 #1a2a4e,
+    inset 0 0 0 3px rgba(255, 255, 255, 0.15);
+}
+
+/* ===== UI de batalla ===== */
+#battle-ui {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 210px;
+  z-index: 6;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+}
+
+#battle-answers {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+}
+
+.battle-question {
+  font-family: var(--body-font);
+  font-size: 19px;
+  line-height: 1.15;
+  margin: 0 0 4px;
+  color: var(--ink);
+  background: rgba(20, 27, 48, 0.9);
+  border: 3px solid var(--border);
+  padding: 6px 8px;
+  min-height: 40px;
+}
+
+.answers-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+}
+
+.answer-btn {
+  font-family: var(--body-font);
+  font-size: 17px;
+  line-height: 1.1;
+  color: var(--ink);
+  background: var(--panel-2);
+  border: 3px solid var(--border);
+  box-shadow: 0 3px 0 #2a3a5e;
+  padding: 8px 6px;
+  cursor: pointer;
+  text-align: left;
+  touch-action: manipulation;
+  min-height: 50px;
+}
+
+.answer-btn:active {
+  transform: translateY(2px);
+  box-shadow: 0 1px 0 #2a3a5e;
+}
+
+.answer-btn.correct-opt {
+  border-color: var(--accent);
+  background: #1f4a34;
+  box-shadow: 0 3px 0 #143a26;
+}
+
+.answer-btn.wrong-opt {
+  border-color: var(--danger);
+  background: #4a1f1f;
+  box-shadow: 0 3px 0 #3a1414;
+}
+
+.answer-btn:disabled {
+  opacity: 0.85;
+}
+
+.answer-btn .opt-key {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  margin-right: 4px;
+  font-family: var(--pixel-font);
+  font-size: 8px;
+  text-align: center;
+  line-height: 18px;
+  background: var(--accent-2);
+  color: #fff;
+  border-radius: 2px;
+  vertical-align: middle;
+}
+
+#battle-feedback {
+  position: absolute;
+  inset: 0;
+  background: rgba(8, 11, 20, 0.92);
+  border-top: 4px solid var(--border-light);
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 12px;
+}
+
+.feedback-text {
+  font-family: var(--body-font);
+  font-size: 20px;
+  line-height: 1.2;
+  margin: 0;
+  color: var(--ink);
+}
+
+.feedback-text.correct { color: var(--accent); }
+.feedback-text.wrong { color: var(--danger); }
+
+#battle-feedback .rpg-btn {
+  width: auto;
+  align-self: flex-end;
+  min-width: 130px;
+}
+
+/* ===== Menú / Pausa ===== */
+.box-title {
+  font-family: var(--pixel-font);
+  font-size: 14px;
+  margin: 0 0 10px;
+  color: var(--gold);
+  text-shadow: 2px 2px 0 var(--shadow);
+}
+
+.menu-line {
+  font-family: var(--body-font);
+  font-size: 20px;
+  margin: 4px 0;
+  color: var(--ink);
+}
+
+.menu-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.result-text {
+  font-family: var(--body-font);
+  font-size: 19px;
+  line-height: 1.2;
+  margin: 0 0 6px;
+  color: var(--ink);
+}
+
+/* ===== Util ===== */
+@media (min-width: 700px) and (orientation: landscape) {
+  /* En desktop horizontal mantenemos el look vertical centrado.
+     El escalado ya lo hace JS; aquí sólo aseguramos fondo. */
+}
