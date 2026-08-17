@@ -3,6 +3,10 @@
 Mini RPG educativo (MVP) sobre la **Teoría General de Sistemas**, basado en el
 Gimnasio 1 de Optimización I / Teoría de Sistemas.
 
+**Actividad de refuerzo:** el banco de preguntas cubre los temas trabajados en
+el Gimnasio 1, páginas 4-13 (hasta Diseño de Sistemas). No incluye Complejidad
+(1.4) ni Investigación de Operaciones (1.6), que se tratan después.
+
 Juego de exploración top-down + batallas por turnos con preguntas. Mobile-first
 vertical, retro pixel art, hecho con **HTML + CSS + JavaScript puro + Canvas 2D**.
 Sin frameworks, sin backend, sin base de datos.
@@ -39,20 +43,34 @@ optiquest/
   styles.css        # estilo retro pixel, responsive
   app.js            # toda la lógica (secciones comentadas)
   data/
-    gym1.json       # 3 zonas, 3 enemigos, 17 preguntas
+    gym1.json       # 3 zonas, 3 enemigos, 53 preguntas
   assets/
     img/            # (opcional) sprites PNG — el MVP usa placeholders Canvas
     audio/          # (opcional) map.mp3, battle.mp3, correct.mp3, wrong.mp3, hit.mp3, victory.mp3
 ```
 
+### Zonas y selección por categorías
+
+| Zona | NPC | Temas (páginas 4-13) |
+|---|---|---|
+| Fundamentos del Sistema | Profa Sistemas | definición, elementos y relaciones, propósito, entrada, proceso, salida, retroalimentación, medio ambiente, objeto/sujeto/concepto |
+| Clasificar y Delimitar | Guardián de Fronteras | clasificación (viviente/no viviente, abstracto/concreto, abierto/cerrado, estático/dinámico/homeostático), subsistema/suprasistema, fronteras (física, económica, técnica, temporal) |
+| Evolución, Mejoramiento y Diseño | Líder del Gimnasio | ciclo de vida (nacimiento, crecimiento, evolución gradual, estabilidad, muerte), mejoramiento vs. diseño, pasos del diseño detallado |
+
+Cada batalla selecciona aleatoriamente un subconjunto del banco, **garantizando
+cobertura por categorías** (cada bloque temático aparece en la partida) sin
+alargar el juego: sigue bastando con 3/4/5 aciertos para vencer (30/40/50 HP).
+La lógica está en `buildBattlePlaylist()` en `app.js`.
+
 ### Contenido editable (`data/gym1.json`)
 
 Cada zona tiene: `id`, `title`, `npc`, `mapColor`, `dialogue` (pre-batalla),
 `victoryDialogue` (al revisitar NPC vencido), `enemy` (`name`, `hp`, `color`) y
-`questions` (con `options`, `answer` índice 0-3, `feedbackCorrect`,
-`feedbackWrong`). Edita ese archivo para cambiar preguntas/enemigos sin tocar
-código. Si el fetch del JSON falla (p. ej. abrir con `file://`), `app.js` lleva
-unos datos embebidos de respaldo y el juego sigue funcionando.
+`questions` (con `category` para la selección por bloques, `options`, `answer`
+índice 0-3, `feedbackCorrect`, `feedbackWrong`). Edita ese archivo para cambiar
+preguntas/enemigos sin tocar código. Si el fetch del JSON falla (p. ej. abrir
+con `file://`), `app.js` lleva unos datos embebidos de respaldo y el juego sigue
+funcionando.
 
 ### Sustituir placeholders por assets reales
 

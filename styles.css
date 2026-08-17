@@ -379,14 +379,14 @@ body {
 
 .battle-question {
   font-family: var(--body-font);
-  font-size: 19px;
+  font-size: 18px;
   line-height: 1.15;
   margin: 0 0 4px;
   color: var(--ink);
   background: rgba(20, 27, 48, 0.9);
   border: 3px solid var(--border);
   padding: 6px 8px;
-  min-height: 40px;
+  min-height: 36px;
 }
 
 .answers-grid {
@@ -397,7 +397,7 @@ body {
 
 .answer-btn {
   font-family: var(--body-font);
-  font-size: 17px;
+  font-size: 16px;
   line-height: 1.1;
   color: var(--ink);
   background: var(--panel-2);
@@ -407,7 +407,7 @@ body {
   cursor: pointer;
   text-align: left;
   touch-action: manipulation;
-  min-height: 50px;
+  min-height: 46px;
 }
 
 .answer-btn:active {

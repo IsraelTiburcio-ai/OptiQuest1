@@ -39,6 +39,10 @@
   const DMG_TO_PLAYER = 10;        // daño por respuesta incorrecta
   const ANIM_DUR = 0.45;           // segundos de animación de golpe
 
+  // Preguntas por playlist de batalla (pool aleatorio por categorías).
+  // La duración no cambia: basta con 3/4/5 aciertos para vencer (30/40/50 HP).
+  const BATTLE_POOL = { fundamentos: 8, clasificacion: 10, evolucion: 10 };
+
   // Paleta retro
   const C = {
     grassA: "#2f6f3a",
@@ -63,177 +67,777 @@
      falla (por ejemplo al abrir con file://). Así el juego nunca
      se rompe aunque el JSON no cargue. Refleja /data/gym1.json. */
   const FALLBACK_DATA = {
-    meta: { name: "OptiQuest - Gimnasio de Sistemas", version: "1.0.0" },
-    player: { name: "Aprendiz", maxHp: 50, attack: 10 },
+    meta: {
+      name: "OptiQuest - Gimnasio de Sistemas",
+      gym: "Gimnasio 1 - Introducción a la Teoría de Sistemas (actividad de refuerzo, hasta Diseño de Sistemas)",
+      version: "1.1.0"
+    },
+    player: {
+      name: "Aprendiz",
+      maxHp: 50,
+      attack: 10
+    },
     zones: [
       {
-        id: "intro_sistemas",
-        title: "¿Qué es un sistema?",
+        id: "fundamentos",
+        title: "Fundamentos del Sistema",
         npc: "Profa Sistemas",
         mapColor: "#3aa856",
         dialogue: [
-          "Bienvenida al Gimnasio de Sistemas. Yo soy la Profa Sistemas.",
-          "Un sistema es un conjunto de elementos relacionados entre sí que interactúan para un propósito.",
-          "Si crees estar lista, demuéstralo enfrentando al Caos Inicial."
+          "Para dominar los sistemas, primero entiende qué son y de qué se componen.",
+          "Un sistema integra elementos, relaciones, propósito, componentes y un medio ambiente.",
+          "También distingue sus elementos: objetos, sujetos y conceptos.",
+          "Demuestra que dominas estos fundamentos venciendo al Caos Inicial."
         ],
         victoryDialogue: [
-          "¡Excelente! Has entendido qué es un sistema.",
-          "Sigue adelante: el Guardián de Componentes te espera más arriba."
+          "¡Excelente! Ya dominas los fundamentos del sistema.",
+          "Sigue al Guardián de Fronteras para aprender a clasificar y delimitar."
         ],
-        enemy: { name: "Caos Inicial", hp: 30, color: "#b04848" },
+        enemy: {
+          name: "Caos Inicial",
+          hp: 30,
+          color: "#b04848"
+        },
         questions: [
           {
+            category: "sistema",
             question: "¿Cuál opción describe mejor un sistema?",
             options: [
               "Un conjunto de elementos relacionados que interactúan",
               "Una variable aislada sin relación con nada",
               "Una fórmula matemática sin contexto",
-              "Una lista de números al azar"
+              "Una lista de datos ordenados"
             ],
             answer: 0,
-            feedbackCorrect: "¡Correcto! Un sistema integra elementos que interactúan entre sí.",
-            feedbackWrong: "Recuerda: un sistema necesita elementos que se relacionan e interactúan."
+            feedbackCorrect: "¡Correcto! Un sistema integra elementos que se relacionan e interactúan.",
+            feedbackWrong: "Un sistema necesita elementos que se relacionan entre sí e interactúan para cumplir un propósito."
           },
           {
+            category: "sistema",
             question: "Para entender un sistema es clave observar...",
-            options: ["Solo el color de sus partes", "Sus partes, relaciones y propósito", "Únicamente su precio", "Nada, los sistemas no se entienden"],
-            answer: 1,
-            feedbackCorrect: "¡Correcto! Partes, relaciones y propósito son la base.",
-            feedbackWrong: "Lo esencial son las partes, las relaciones entre ellas y su propósito común."
+            options: [
+              "Sus partes, relaciones y propósito",
+              "Solo sus partes, sin importar las relaciones",
+              "Únicamente su propósito final",
+              "Su ubicación geográfica"
+            ],
+            answer: 0,
+            feedbackCorrect: "¡Correcto! Partes, relaciones y propósito son la base para entender un sistema.",
+            feedbackWrong: "Lo esencial es observar sus partes, las relaciones entre ellas y su propósito común."
           },
           {
+            category: "sistema",
             question: "¿Un sistema puede existir sin relaciones entre sus elementos?",
-            options: ["Sí, siempre y cuando haya muchos elementos", "No, las relaciones son esenciales para que sea sistema", "Solo si los elementos son grandes", "Solo si está cerrado"],
+            options: [
+              "Sí, basta con que tenga muchos elementos",
+              "No, las relaciones son esenciales para que sea un sistema",
+              "Solo si sus elementos son muy grandes",
+              "Solo si no tiene propósito"
+            ],
             answer: 1,
-            feedbackCorrect: "¡Correcto! Sin relaciones no hay sistema.",
-            feedbackWrong: "Sin relaciones entre elementos no podemos hablar de sistema."
+            feedbackCorrect: "¡Correcto! Sin relaciones entre sus elementos no existe un sistema.",
+            feedbackWrong: "Las relaciones entre elementos son esenciales; sin ellas no podemos hablar de sistema."
           },
           {
+            category: "sistema",
             question: "El propósito de un sistema se refiere a...",
-            options: ["Su tamaño físico", "La meta u objetivo para el que fue formado", "El material del que está hecho", "El nombre que recibe"],
+            options: [
+              "El tamaño físico que alcanza",
+              "La meta u objetivo para el que fue formado",
+              "El material del que está hecho",
+              "La cantidad de elementos que lo componen"
+            ],
             answer: 1,
-            feedbackCorrect: "¡Correcto! El propósito es el objetivo común del sistema.",
+            feedbackCorrect: "¡Correcto! El propósito es la meta u objetivo para el que se forma el sistema.",
             feedbackWrong: "El propósito es la meta u objetivo que el sistema persigue."
-          }
-        ]
-      },
-      {
-        id: "componentes",
-        title: "Componentes del sistema",
-        npc: "Guardián de Componentes",
-        mapColor: "#3a8ac8",
-        dialogue: [
-          "Yo soy el Guardián de Componentes.",
-          "Todo sistema tiene: entrada, proceso, salida, retroalimentación y ambiente.",
-          "Demuestra que dominas los componentes venciendo al Olvido."
-        ],
-        victoryDialogue: ["¡Bien hecho! Ya dominas los componentes del sistema.", "El Líder del Gimnasio te espera para la prueba final."],
-        enemy: { name: "Olvido", hp: 40, color: "#7048b0" },
-        questions: [
+          },
           {
+            category: "sistema",
+            question: "En un consultorio médico, la enfermera, la balanza y el expediente solo forman un sistema porque...",
+            options: [
+              "Se relacionan e interactúan para atender pacientes",
+              "Están dentro del mismo edificio",
+              "Fueron comprados el mismo año",
+              "Tienen el mismo color institucional"
+            ],
+            answer: 0,
+            feedbackCorrect: "¡Correcto! Es la interacción entre sus elementos lo que forma el sistema.",
+            feedbackWrong: "Tener varios elementos no basta: deben relacionarse e interactuar para un propósito común."
+          },
+          {
+            category: "componentes",
             question: "¿Qué es la entrada de un sistema?",
-            options: ["El resultado final del sistema", "Lo que ingresa al sistema para ser procesado", "El ajuste del sistema", "El entorno que rodea al sistema"],
+            options: [
+              "El resultado final del sistema",
+              "Lo que ingresa al sistema para ser procesado",
+              "El ajuste que se hace al sistema",
+              "El entorno que rodea al sistema"
+            ],
             answer: 1,
-            feedbackCorrect: "¡Correcto! La entrada es lo que ingresa al sistema.",
+            feedbackCorrect: "¡Correcto! La entrada es lo que ingresa al sistema para ser procesado.",
             feedbackWrong: "La entrada son los elementos o datos que ingresan al sistema para ser procesados."
           },
           {
+            category: "componentes",
             question: "El proceso dentro de un sistema se encarga de...",
-            options: ["Recibir el entorno", "Transformar la entrada en salida", "Medir el resultado", "Detener el sistema"],
+            options: [
+              "Recibir el entorno",
+              "Transformar la entrada en salida",
+              "Medir el resultado",
+              "Detener el sistema"
+            ],
             answer: 1,
             feedbackCorrect: "¡Correcto! El proceso transforma la entrada en salida.",
-            feedbackWrong: "El proceso transforma la entrada para producir una salida."
+            feedbackWrong: "El proceso transforma la entrada para producir la salida."
           },
           {
+            category: "componentes",
             question: "¿Qué es la salida de un sistema?",
-            options: ["El resultado que el sistema entrega tras el proceso", "Lo que ingresa al sistema", "Un error del sistema", "El entorno externo"],
+            options: [
+              "El resultado que el sistema entrega tras el proceso",
+              "Lo que ingresa al sistema",
+              "Un error del sistema",
+              "El entorno externo"
+            ],
             answer: 0,
-            feedbackCorrect: "¡Correcto! La salida es el resultado entregado.",
+            feedbackCorrect: "¡Correcto! La salida es el resultado que entrega el sistema.",
             feedbackWrong: "La salida es el resultado que el sistema entrega después del proceso."
           },
           {
+            category: "componentes",
             question: "La retroalimentación sirve para...",
-            options: ["Decorar el sistema", "Ajustar el funcionamiento con base en los resultados", "Aumentar el tamaño del sistema", "Cerrar el sistema para siempre"],
+            options: [
+              "Registrar la salida sin hacer cambios",
+              "Ajustar el funcionamiento con base en los resultados",
+              "Incrementar la cantidad de entradas",
+              "Sustituir por completo al proceso"
+            ],
             answer: 1,
             feedbackCorrect: "¡Correcto! La retroalimentación ajusta el sistema según sus resultados.",
             feedbackWrong: "La retroalimentación usa la información de la salida para ajustar el sistema."
           },
           {
-            question: "¿Qué es el ambiente de un sistema?",
-            options: ["El resultado final del sistema", "El conjunto de elementos y procesos internos", "El entorno externo que rodea al sistema", "El propósito del sistema"],
+            category: "componentes",
+            question: "¿Qué es el medio ambiente de un sistema?",
+            options: [
+              "El resultado final del sistema",
+              "El conjunto de elementos internos",
+              "El entorno externo que rodea al sistema",
+              "El propósito del sistema"
+            ],
             answer: 2,
-            feedbackCorrect: "¡Correcto! El ambiente es el entorno que rodea al sistema.",
-            feedbackWrong: "El ambiente es todo lo que rodea al sistema y con lo que interactúa."
+            feedbackCorrect: "¡Correcto! El medio ambiente es el entorno que rodea al sistema.",
+            feedbackWrong: "El medio ambiente es todo lo que rodea al sistema y con lo que interactúa."
           },
           {
-            question: "Un sistema abierto se diferencia de uno cerrado en que...",
-            options: ["El abierto intercambia materia/energía con el ambiente, el cerrado no", "El abierto es más grande", "El cerrado tiene más componentes", "No hay diferencia real"],
+            category: "componentes",
+            question: "En un restaurante, la materia prima que compra el chef para cocinar es la...",
+            options: [
+              "Salida del sistema",
+              "Entrada del sistema",
+              "Retroalimentación",
+              "Medio ambiente"
+            ],
+            answer: 1,
+            feedbackCorrect: "¡Correcto! La materia prima ingresa al restaurante para ser procesada.",
+            feedbackWrong: "Lo que ingresa para ser procesado es la entrada del sistema."
+          },
+          {
+            category: "componentes",
+            question: "Una calificación baja en un examen hace que la profesora ajuste sus explicaciones. En el sistema 'clase', esa información que se usa para ajustar es la...",
+            options: [
+              "Retroalimentación",
+              "Entrada",
+              "Salida",
+              "Medio ambiente"
+            ],
             answer: 0,
-            feedbackCorrect: "¡Correcto! Los sistemas abiertos intercambian con el ambiente.",
-            feedbackWrong: "Un sistema abierto intercambia materia/energía/información con el ambiente; el cerrado, no."
+            feedbackCorrect: "¡Correcto! La información de la salida que se usa para ajustar es la retroalimentación.",
+            feedbackWrong: "Es la retroalimentación: la información de los resultados que permite ajustar el sistema."
+          },
+          {
+            category: "elementos",
+            question: "En el sistema 'clase de Optimización', ¿qué tipo de elemento es el profesor?",
+            options: [
+              "Objeto",
+              "Sujeto",
+              "Concepto",
+              "Salida"
+            ],
+            answer: 1,
+            feedbackCorrect: "¡Correcto! El profesor es un sujeto: una persona que piensa y participa en el sistema.",
+            feedbackWrong: "El profesor es un sujeto, porque es una persona pensante dentro del sistema."
+          },
+          {
+            category: "elementos",
+            question: "En el sistema 'clase de Optimización', el pizarrón y el proyector son elementos de tipo...",
+            options: [
+              "Objetos",
+              "Sujetos",
+              "Conceptos",
+              "Entradas"
+            ],
+            answer: 0,
+            feedbackCorrect: "¡Correcto! Son objetos: elementos físicos y no vivientes del sistema.",
+            feedbackWrong: "El pizarrón y el proyector son objetos, pues son elementos físicos no vivientes."
+          },
+          {
+            category: "elementos",
+            question: "En una biblioteca, la idea de 'reglamento de préstamo' corresponde a un elemento de tipo...",
+            options: [
+              "Objeto",
+              "Sujeto",
+              "Concepto",
+              "Proceso"
+            ],
+            answer: 2,
+            feedbackCorrect: "¡Correcto! El reglamento es una idea, un concepto del sistema.",
+            feedbackWrong: "Una idea o abstracción es un concepto, no un objeto ni un sujeto."
+          },
+          {
+            category: "elementos",
+            question: "En una granja, el tractor es un elemento de tipo...",
+            options: [
+              "Objeto",
+              "Sujeto",
+              "Concepto",
+              "Retroalimentación"
+            ],
+            answer: 0,
+            feedbackCorrect: "¡Correcto! El tractor es un objeto: equipo o elemento físico.",
+            feedbackWrong: "El tractor es un objeto, un elemento físico y no viviente."
           }
         ]
       },
       {
-        id: "lider",
-        title: "Prueba final del Gimnasio",
-        npc: "Líder del Gimnasio",
-        mapColor: "#b09030",
+        id: "clasificacion",
+        title: "Clasificar y Delimitar",
+        npc: "Guardián de Fronteras",
+        mapColor: "#3a8ac8",
         dialogue: [
-          "Yo soy el Líder del Gimnasio.",
-          "La prueba final integra todo: subsistemas, suprasistemas y mejoramiento frente al diseño.",
-          "¡Demuestra tu dominio y conviértete en Maestra de Sistemas!"
+          "Un sistema se entiende mejor al clasificarlo y delimitar sus fronteras.",
+          "¿Es viviente o no? ¿Abstracto o concreto? ¿Abierto o cerrado? ¿Estático, dinámico u homeostático?",
+          "También distingue subsistemas, suprasistemas y las fronteras física, económica, técnica y temporal.",
+          "Vénceme y demostrarás que sabes clasificar y delimitar."
         ],
-        victoryDialogue: ["¡Increíble! Has vencido al Gimnasio de Sistemas.", "Eres oficialmente una Maestra de Sistemas. ¡Felicidades!"],
-        enemy: { name: "Entropía Final", hp: 50, color: "#c84030" },
+        victoryDialogue: [
+          "¡Bien hecho! Ya sabes clasificar sistemas y delimitar sus fronteras.",
+          "El Líder del Gimnasio te espera para la prueba final de evolución, mejoramiento y diseño."
+        ],
+        enemy: {
+          name: "Olvido",
+          hp: 40,
+          color: "#7048b0"
+        },
         questions: [
           {
+            category: "clasificacion",
+            question: "Un organismo humano que intercambia materia y energía con el ambiente es un sistema...",
+            options: [
+              "Abierto",
+              "Cerrado",
+              "Abstracto",
+              "Estático"
+            ],
+            answer: 0,
+            feedbackCorrect: "¡Correcto! Al intercambiar materia y energía con el ambiente, es un sistema abierto.",
+            feedbackWrong: "Es abierto porque intercambia materia y energía con su ambiente."
+          },
+          {
+            category: "clasificacion",
+            question: "El sistema 'y = 3x + 2', representado como una idea matemática, es un ejemplo de sistema...",
+            options: [
+              "Concreto",
+              "Abstracto",
+              "Viviente",
+              "Cerrado"
+            ],
+            answer: 1,
+            feedbackCorrect: "¡Correcto! Es abstracto porque existe como idea, no como algo físico.",
+            feedbackWrong: "Una representación que existe en el pensamiento es un sistema abstracto."
+          },
+          {
+            category: "clasificacion",
+            question: "Un automóvil, aunque esté en funcionamiento, es un sistema...",
+            options: [
+              "Viviente",
+              "No viviente",
+              "Abstracto",
+              "Homeostático"
+            ],
+            answer: 1,
+            feedbackCorrect: "¡Correcto! El automóvil es un sistema no viviente.",
+            feedbackWrong: "El automóvil no tiene vida; es un sistema no viviente."
+          },
+          {
+            category: "clasificacion",
+            question: "Una biblioteca con sus estantes, libros y computadoras es un ejemplo de sistema...",
+            options: [
+              "Abstracto",
+              "Viviente",
+              "Concreto",
+              "Cerrado"
+            ],
+            answer: 2,
+            feedbackCorrect: "¡Correcto! Sus elementos son físicos y tangibles: es un sistema concreto.",
+            feedbackWrong: "Un sistema cuyos elementos son físicos y tangibles es concreto."
+          },
+          {
+            category: "clasificacion",
+            question: "Una computadora apagada que no realiza cambios se considera un sistema...",
+            options: [
+              "Estático",
+              "Dinámico",
+              "Homeostático",
+              "Abierto"
+            ],
+            answer: 0,
+            feedbackCorrect: "¡Correcto! Al no presentar cambios se considera un sistema estático.",
+            feedbackWrong: "Un sistema sin cambios en el tiempo es estático."
+          },
+          {
+            category: "clasificacion",
+            question: "El clima de una región cambia constantemente con el viento y la lluvia. Es un sistema...",
+            options: [
+              "Estático",
+              "Dinámico",
+              "Homeostático",
+              "Abstracto"
+            ],
+            answer: 1,
+            feedbackCorrect: "¡Correcto! Sus elementos cambian continuamente: es dinámico.",
+            feedbackWrong: "Como presenta cambios constantes, se trata de un sistema dinámico."
+          },
+          {
+            category: "clasificacion",
+            question: "Un sistema que mantiene estables sus condiciones internas a pesar de los cambios del entorno se denomina...",
+            options: [
+              "Estático",
+              "Dinámico",
+              "Homeostático",
+              "Cerrado"
+            ],
+            answer: 2,
+            feedbackCorrect: "¡Correcto! El sistema regula su interior para mantenerse estable: es homeostático.",
+            feedbackWrong: "El que mantiene su equilibrio interno frente al entorno es homeostático."
+          },
+          {
+            category: "clasificacion",
+            question: "Un experimento sellado al vacío que no intercambia materia con su entorno es un sistema...",
+            options: [
+              "Abierto",
+              "Cerrado",
+              "Dinámico",
+              "Concreto"
+            ],
+            answer: 1,
+            feedbackCorrect: "¡Correcto! Al no intercambiar materia con el entorno es un sistema cerrado.",
+            feedbackWrong: "El que no intercambia materia o energía con su ambiente es cerrado."
+          },
+          {
+            category: "clasificacion",
+            question: "Un árbol que nace, crece y muere es un sistema...",
+            options: [
+              "Viviente",
+              "No viviente",
+              "Estático",
+              "Abstracto"
+            ],
+            answer: 0,
+            feedbackCorrect: "¡Correcto! El árbol tiene vida: es un sistema viviente.",
+            feedbackWrong: "Los seres vivos, como el árbol, son sistemas vivientes."
+          },
+          {
+            category: "jerarquia",
             question: "¿Qué es un subsistema?",
-            options: ["Un sistema que contiene a otros sistemas", "Una parte de un sistema más grande", "El ambiente externo", "El propósito del sistema"],
+            options: [
+              "Un sistema que contiene a otros sistemas",
+              "Una parte de un sistema más grande",
+              "El ambiente externo",
+              "El propósito del sistema"
+            ],
             answer: 1,
             feedbackCorrect: "¡Correcto! Un subsistema es parte de un sistema mayor.",
             feedbackWrong: "Un subsistema es un sistema que forma parte de un sistema más grande."
           },
           {
+            category: "jerarquia",
             question: "¿Qué es un suprasistema?",
-            options: ["Una parte pequeña de un sistema", "Un sistema que contiene a otros sistemas", "La salida de un sistema", "Un tipo de retroalimentación"],
+            options: [
+              "Una parte pequeña de un sistema",
+              "Un sistema que contiene a otros sistemas",
+              "La salida de un sistema",
+              "Un tipo de retroalimentación"
+            ],
             answer: 1,
             feedbackCorrect: "¡Correcto! El suprasistema contiene a otros sistemas.",
             feedbackWrong: "Un suprasistema es el sistema mayor que contiene a otros sistemas (subsistemas)."
           },
           {
-            question: "Mejorar un sistema consiste en...",
-            options: ["Crear un sistema totalmente nuevo desde cero", "Optimizar un sistema que ya existe", "Eliminar el ambiente del sistema", "Quitar la retroalimentación"],
-            answer: 1,
-            feedbackCorrect: "¡Correcto! Mejorar optimiza un sistema existente.",
-            feedbackWrong: "Mejorar busca optimizar un sistema que ya existe para que funcione mejor."
-          },
-          {
-            question: "Diferencia clave entre mejorar y diseñar un sistema:",
-            options: ["Mejorar actúa sobre un sistema existente; diseñar crea uno nuevo", "Son exactamente lo mismo", "Mejorar crea uno nuevo; diseñar repara el existente", "Ninguna, ambos eliminan el sistema"],
-            answer: 0,
-            feedbackCorrect: "¡Correcto! Mejorar = existe; diseñar = nuevo.",
-            feedbackWrong: "Mejorar optimiza lo que ya existe; diseñar crea un sistema nuevo."
-          },
-          {
+            category: "jerarquia",
             question: "Si una escuela es un sistema, los grupos dentro de ella son...",
-            options: ["Suprasistemas", "Subsistemas", "Ambientes", "Salidas"],
+            options: [
+              "Suprasistemas",
+              "Subsistemas",
+              "Ambientes",
+              "Salidas"
+            ],
             answer: 1,
             feedbackCorrect: "¡Correcto! Los grupos son subsistemas de la escuela.",
-            feedbackWrong: "Los grupos, al ser parte de la escuela (sistema mayor), son sus subsistemas."
+            feedbackWrong: "Los grupos, al ser parte de la escuela, son sus subsistemas."
           },
           {
-            question: "Si una escuela es un sistema, el distrito escolar que la agrupa es...",
-            options: ["Un subsistema de la escuela", "El ambiente interno", "Un suprasistema que la contiene", "La entrada del sistema"],
+            category: "jerarquia",
+            question: "Un sistema y su entorno dan como resultado un...",
+            options: [
+              "Subsistema",
+              "Suprasistema",
+              "Proceso",
+              "Elemento"
+            ],
+            answer: 1,
+            feedbackCorrect: "¡Correcto! El sistema y su entorno dan como resultado un suprasistema.",
+            feedbackWrong: "El sistema y su entorno forman un suprasistema que lo contiene."
+          },
+          {
+            category: "jerarquia",
+            question: "En el sistema 'ser humano', el sistema nervioso es un...",
+            options: [
+              "Subsistema",
+              "Suprasistema",
+              "Medio ambiente",
+              "Objeto"
+            ],
+            answer: 0,
+            feedbackCorrect: "¡Correcto! El sistema nervioso es parte del sistema humano: un subsistema.",
+            feedbackWrong: "El sistema nervioso forma parte del sistema humano, por eso es un subsistema."
+          },
+          {
+            category: "fronteras",
+            question: "Una empresa quiere ampliar su planta, pero solo dispone de $100,000. ¿Qué frontera está limitando al sistema?",
+            options: [
+              "Física",
+              "Económica",
+              "Técnica",
+              "Temporal"
+            ],
+            answer: 1,
+            feedbackCorrect: "¡Correcto! La limitación es económica porque se refiere al presupuesto disponible.",
+            feedbackWrong: "La frontera económica se refiere a la capacidad monetaria: el presupuesto disponible."
+          },
+          {
+            category: "fronteras",
+            question: "Un edificio solo puede ocupar el terreno de 500 m² que posee. ¿Qué frontera limita al sistema?",
+            options: [
+              "Física",
+              "Económica",
+              "Técnica",
+              "Temporal"
+            ],
+            answer: 0,
+            feedbackCorrect: "¡Correcto! La frontera física es el límite espacial o corporal.",
+            feedbackWrong: "La frontera física se refiere al límite espacial o corporal del sistema."
+          },
+          {
+            category: "fronteras",
+            question: "El proyecto debe concluirse en 6 meses. ¿Qué frontera lo limita?",
+            options: [
+              "Económica",
+              "Técnica",
+              "Física",
+              "Temporal"
+            ],
+            answer: 3,
+            feedbackCorrect: "¡Correcto! La frontera temporal es la duración en el tiempo.",
+            feedbackWrong: "La frontera temporal corresponde a la duración en el tiempo del sistema."
+          },
+          {
+            category: "fronteras",
+            question: "Solo pueden participar en el proyecto personas con estudios de posgrado. ¿Qué frontera limita al sistema?",
+            options: [
+              "Técnica",
+              "Económica",
+              "Física",
+              "Temporal"
+            ],
+            answer: 0,
+            feedbackCorrect: "¡Correcto! La frontera técnica se refiere al nivel de estudios requerido.",
+            feedbackWrong: "La frontera técnica es el nivel de estudios o preparación exigido por el sistema."
+          },
+          {
+            category: "fronteras",
+            question: "Un sistema de transporte público solo opera dentro de los límites de la ciudad. ¿Qué frontera describe esa situación?",
+            options: [
+              "Física",
+              "Económica",
+              "Técnica",
+              "Temporal"
+            ],
+            answer: 0,
+            feedbackCorrect: "¡Correcto! El límite territorial es una frontera física.",
+            feedbackWrong: "El límite espacial o territorial corresponde a la frontera física."
+          }
+        ]
+      },
+      {
+        id: "evolucion",
+        title: "Evolución, Mejoramiento y Diseño",
+        npc: "Líder del Gimnasio",
+        mapColor: "#b09030",
+        dialogue: [
+          "Esta es la prueba final de repaso.",
+          "Recuerda el ciclo de vida del sistema: nacimiento, crecimiento, evolución gradual, estabilidad y muerte.",
+          "Y distingue el mejoramiento (optimizar lo que ya existe) del diseño (crear nuevas alternativas).",
+          "¡Demuestra tu dominio y conviértete en Maestra de Sistemas!"
+        ],
+        victoryDialogue: [
+          "¡Increíble! Has vencido el Gimnasio de Sistemas.",
+          "Dominas desde el concepto de sistema hasta el diseño de sistemas. Eres oficialmente una Maestra de Sistemas. ¡Felicidades!"
+        ],
+        enemy: {
+          name: "Entropía Final",
+          hp: 50,
+          color: "#c84030"
+        },
+        questions: [
+          {
+            category: "ciclo",
+            question: "Una organización ya alcanzó un funcionamiento constante y mantiene sus operaciones sin grandes cambios. ¿En qué etapa del ciclo de vida se encuentra?",
+            options: [
+              "Nacimiento",
+              "Crecimiento",
+              "Evolución gradual",
+              "Estabilidad"
+            ],
+            answer: 3,
+            feedbackCorrect: "¡Correcto! La etapa de funcionamiento constante es la estabilidad.",
+            feedbackWrong: "La estabilidad es la etapa donde el sistema se mantiene funcionando sin grandes cambios."
+          },
+          {
+            category: "ciclo",
+            question: "Un proyecto comienza con una idea y su primera planeación. ¿En qué etapa del ciclo está?",
+            options: [
+              "Nacimiento",
+              "Crecimiento",
+              "Estabilidad",
+              "Muerte"
+            ],
+            answer: 0,
+            feedbackCorrect: "¡Correcto! El nacimiento es el inicio del sistema.",
+            feedbackWrong: "La etapa inicial, donde el sistema surge, es el nacimiento."
+          },
+          {
+            category: "ciclo",
+            question: "Una empresa aumenta su personal, sus ventas y sus instalaciones año con año. ¿En qué etapa del ciclo se encuentra?",
+            options: [
+              "Nacimiento",
+              "Crecimiento",
+              "Evolución gradual",
+              "Estabilidad"
+            ],
+            answer: 1,
+            feedbackCorrect: "¡Correcto! El aumento constante es propio de la etapa de crecimiento.",
+            feedbackWrong: "La expansión continua del sistema corresponde al crecimiento."
+          },
+          {
+            category: "ciclo",
+            question: "Un sistema de riego se adapta poco a poco para consumir menos agua con el paso del tiempo. ¿En qué etapa está?",
+            options: [
+              "Nacimiento",
+              "Crecimiento",
+              "Evolución gradual",
+              "Muerte"
+            ],
             answer: 2,
-            feedbackCorrect: "¡Correcto! El distrito es el suprasistema.",
-            feedbackWrong: "El distrito escolar contiene a la escuela, por eso es un suprasistema."
+            feedbackCorrect: "¡Correcto! El cambio paulatino del sistema es su evolución gradual.",
+            feedbackWrong: "La adaptación lenta y paulatina corresponde a la evolución gradual."
+          },
+          {
+            category: "ciclo",
+            question: "Cuando un sistema deja de funcionar y desaparece, se encuentra en la etapa de...",
+            options: [
+              "Estabilidad",
+              "Muerte",
+              "Nacimiento",
+              "Crecimiento"
+            ],
+            answer: 1,
+            feedbackCorrect: "¡Correcto! El fin del sistema es su muerte.",
+            feedbackWrong: "La etapa final del ciclo, cuando el sistema deja de funcionar, es la muerte."
+          },
+          {
+            category: "ciclo",
+            question: "¿Cuál es el orden correcto del ciclo de vida de un sistema?",
+            options: [
+              "Nacimiento, crecimiento, evolución gradual, estabilidad, muerte",
+              "Estabilidad, muerte, nacimiento, crecimiento, evolución gradual",
+              "Nacimiento, muerte, estabilidad, crecimiento, evolución gradual",
+              "Evolución gradual, nacimiento, estabilidad, muerte, crecimiento"
+            ],
+            answer: 0,
+            feedbackCorrect: "¡Correcto! Ese es el orden del ciclo de vida del sistema.",
+            feedbackWrong: "El ciclo sigue el orden: nacimiento, crecimiento, evolución gradual, estabilidad y muerte."
+          },
+          {
+            category: "mejoramiento",
+            question: "En el sistema 'transporte público', cambiar las unidades viejas por unidades nuevas y capacitar a los choferes es un ejemplo de...",
+            options: [
+              "Mejoramiento",
+              "Diseño",
+              "Nacimiento",
+              "Clasificación"
+            ],
+            answer: 0,
+            feedbackCorrect: "¡Correcto! Se optimiza un sistema que ya existe: eso es mejoramiento.",
+            feedbackWrong: "Mejorar actúa sobre un sistema existente para optimizarlo, como renovar el transporte."
+          },
+          {
+            category: "mejoramiento",
+            question: "Una empresa ya establecida modifica su proceso de producción para reducir costos, sin crear un sistema nuevo. Esto es...",
+            options: [
+              "Diseño",
+              "Mejoramiento",
+              "Ciclo de vida",
+              "Frontera temporal"
+            ],
+            answer: 1,
+            feedbackCorrect: "¡Correcto! Optimizar un sistema existente es mejoramiento.",
+            feedbackWrong: "Como el sistema ya existe y solo se optimiza, es un mejoramiento."
+          },
+          {
+            category: "mejoramiento",
+            question: "Según el Gimnasio, el mejoramiento se interesa principalmente por...",
+            options: [
+              "Las sustancias, el contenido y las causas",
+              "La estructura y los procesos",
+              "El método y la función",
+              "Las salidas innovadoras y creativas"
+            ],
+            answer: 0,
+            feedbackCorrect: "¡Correcto! El mejoramiento se interesa por las sustancias, el contenido y las causas.",
+            feedbackWrong: "En el mejoramiento los intereses son las sustancias, el contenido y las causas."
+          },
+          {
+            category: "mejoramiento",
+            question: "En el mejoramiento se explica principalmente...",
+            options: [
+              "La desviación del pasado",
+              "La predicción de resultados futuros",
+              "La cosmovisión de los clientes",
+              "Las salidas innovadoras"
+            ],
+            answer: 0,
+            feedbackCorrect: "¡Correcto! El mejoramiento explica la desviación del pasado.",
+            feedbackWrong: "El mejoramiento se enfoca en explicar la desviación del pasado."
+          },
+          {
+            category: "diseno",
+            question: "En el sistema 'transporte público', diseñar mejores rutas para que llegue más rápido a su destino es un ejemplo de...",
+            options: [
+              "Mejoramiento",
+              "Diseño",
+              "Estabilidad",
+              "Retroalimentación"
+            ],
+            answer: 1,
+            feedbackCorrect: "¡Correcto! Crear nuevas alternativas para el sistema es diseño.",
+            feedbackWrong: "Al plantear nuevas alternativas para el sistema, se trata de un diseño."
+          },
+          {
+            category: "diseno",
+            question: "El diseño de sistemas involucra principalmente...",
+            options: [
+              "La planeación, evaluación e implantación de nuevas alternativas",
+              "Cambiar piezas del sistema existente",
+              "Explicar los errores del pasado",
+              "Reducir el presupuesto"
+            ],
+            answer: 0,
+            feedbackCorrect: "¡Correcto! El diseño involucra planeación, evaluación e implantación de nuevas alternativas.",
+            feedbackWrong: "El diseño implica planear, evaluar e implantar nuevas alternativas para el sistema."
+          },
+          {
+            category: "diseno",
+            question: "En el diseño de sistemas, el interés está puesto en...",
+            options: [
+              "Las sustancias y el contenido",
+              "La estructura y los procesos, el método, el propósito y la función",
+              "El origen de los materiales",
+              "La antigüedad del sistema"
+            ],
+            answer: 1,
+            feedbackCorrect: "¡Correcto! El diseño se interesa por la estructura y los procesos, el método, el propósito y la función.",
+            feedbackWrong: "El interés del diseño son la estructura y los procesos, el método, el propósito y la función."
+          },
+          {
+            category: "diseno",
+            question: "En el diseño detallado de sistemas, la 'composición de las cosmovisiones de los clientes y planificadores' es...",
+            options: [
+              "Un paso del diseño",
+              "Una frontera del sistema",
+              "Un tipo de clasificación",
+              "Una etapa del ciclo de vida"
+            ],
+            answer: 0,
+            feedbackCorrect: "¡Correcto! Es uno de los pasos del diseño detallado de sistemas.",
+            feedbackWrong: "Componer las cosmovisiones de clientes y planificadores es un paso del diseño de sistemas."
+          },
+          {
+            category: "diseno",
+            question: "¿Cuál de las siguientes acciones corresponde a un paso del diseño detallado de sistemas?",
+            options: [
+              "Identificar salidas, atributos, criterios, escalas de medición y modelos",
+              "Sustituir al azar los componentes",
+              "Eliminar toda medición del sistema",
+              "Ocultar el propósito del sistema"
+            ],
+            answer: 0,
+            feedbackCorrect: "¡Correcto! Identificar salidas, atributos, criterios, escalas y modelos es un paso del diseño.",
+            feedbackWrong: "Ese paso identifica salidas, atributos, criterios, escalas de medición y modelos."
+          },
+          {
+            category: "diseno",
+            question: "El último paso del diseño detallado de sistemas consiste en...",
+            options: [
+              "La revisión y re-evaluación",
+              "La compra de equipos",
+              "La cancelación del proyecto",
+              "El olvido del sistema"
+            ],
+            answer: 0,
+            feedbackCorrect: "¡Correcto! El diseño termina con la revisión y re-evaluación.",
+            feedbackWrong: "El diseño detallado concluye con la revisión y re-evaluación del sistema."
+          },
+          {
+            category: "diseno",
+            question: "El mejoramiento desintegra el gran problema en subproblemas mediante un proceso de reducción, mientras que el diseño...",
+            options: [
+              "Involucra la planeación, evaluación e implantación de nuevas alternativas para el sistema total",
+              "Elimina el problema sin analizarlo",
+              "Se enfoca solo en el pasado",
+              "Reduce el sistema a un solo elemento"
+            ],
+            answer: 0,
+            feedbackCorrect: "¡Correcto! El diseño planea, evalúa e implanta nuevas alternativas para el sistema total.",
+            feedbackWrong: "A diferencia del mejoramiento, el diseño involucra nuevas alternativas para el sistema total."
+          },
+          {
+            category: "diseno",
+            question: "El mejoramiento se aplica cuando...",
+            options: [
+              "El sistema ya existe y se busca optimizarlo",
+              "El sistema aún no existe y se crea desde cero",
+              "El sistema ya murió",
+              "Ninguna, mejoramiento y diseño son idénticos"
+            ],
+            answer: 0,
+            feedbackCorrect: "¡Correcto! Mejorar optimiza un sistema existente; diseñar crea nuevas alternativas.",
+            feedbackWrong: "Mejorar actúa sobre un sistema que ya existe; diseñar es crear nuevas alternativas."
           }
         ]
       }
     ]
   };
-
   /* =========================================================
      2) STATE
      ========================================================= */
@@ -310,7 +914,11 @@
     },
     apply(save) {
       if (!save) return;
-      state.defeated = save.defeated || {};
+      // Sanea progreso de versiones anteriores: solo cuenta zonas conocidas.
+      state.defeated = {};
+      for (const z of state.zones) {
+        if (save.defeated && save.defeated[z.id]) state.defeated[z.id] = true;
+      }
       state.player.bayas = save.bayas || 0;
       state.player.hp = save.hp || state.playerMaxHp;
       state.sawIntro = save.sawIntro || false;
@@ -825,8 +1433,8 @@
      ========================================================= */
   const INTRO_LINES = [
     "Bienvenida al Gimnasio de Sistemas.",
-    "Para avanzar tendrás que demostrar que entiendes cómo funcionan los sistemas, sus componentes y sus relaciones.",
-    "Explora el mapa, habla con los NPCs y vence batallas de preguntas.",
+    "Vencerás tres batallas de repaso: fundamentos, clasificación y delimitación, y evolución, mejoramiento y diseño.",
+    "Explora el mapa, habla con los NPCs y responde bien las preguntas para atacar.",
     "¡Tu primera maestra te espera arriba! Toca A para interactuar."
   ];
   let introIdx = 0;
@@ -1076,6 +1684,43 @@
   /* =========================================================
      12) BATTLE SCENE
      ========================================================= */
+  // Selección por categorías: garantiza que cada bloque temático tenga
+  // cabida en la partida, sin repetir preguntas de forma inmediata.
+  function buildBattlePlaylist(questions, poolSize) {
+    const groups = [];
+    const byCat = new Map();
+    questions.forEach((q) => {
+      const cat = q.category || "general";
+      if (!byCat.has(cat)) byCat.set(cat, []);
+      byCat.get(cat).push(q);
+    });
+    byCat.forEach((qs) => {
+      for (let i = qs.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        const tmp = qs[i]; qs[i] = qs[j]; qs[j] = tmp;
+      }
+      groups.push(qs);
+    });
+    for (let i = groups.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      const tmp = groups[i]; groups[i] = groups[j]; groups[j] = tmp;
+    }
+    const playlist = [];
+    let idx = 0;
+    let added = true;
+    while (playlist.length < poolSize && added) {
+      added = false;
+      for (const qs of groups) {
+        if (idx < qs.length && playlist.length < poolSize) {
+          playlist.push(qs[idx]);
+          added = true;
+        }
+      }
+      idx++;
+    }
+    return playlist;
+  }
+
   function startBattle(zone) {
     state.battle = {
       zone,
@@ -1083,7 +1728,7 @@
       enemyColor: zone.enemy.color,
       enemyHp: zone.enemy.hp,
       enemyMaxHp: zone.enemy.hp,
-      questions: zone.questions,
+      questions: buildBattlePlaylist(zone.questions, BATTLE_POOL[zone.id] || 8),
       qIdx: 0,
       playerHp: state.playerMaxHp,
       playerMaxHp: state.playerMaxHp,
