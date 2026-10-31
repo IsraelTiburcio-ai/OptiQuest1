@@ -880,6 +880,7 @@
   };
 
   // Referencias DOM
+  const optilabResults = window.OptiLabResults?.create('OptiQuest1');
   const dom = {};
 
   /* =========================================================
@@ -1409,6 +1410,7 @@
      8) TITLE SCENE
      ========================================================= */
   function startNewGame() {
+    optilabResults?.start();
     Audio.unlock();
     state.sawIntro = false;
     state.player.bayas = 0;
@@ -1420,6 +1422,7 @@
   }
 
   function continueGame() {
+    optilabResults?.start();
     Audio.unlock();
     const s = Save.load();
     Save.apply(s);
@@ -1842,6 +1845,7 @@
     if (won) {
       const total = Object.keys(state.defeated).length;
       const complete = total >= state.zones.length;
+      if (complete) optilabResults?.complete({reason:'completed',correct:total,total:state.zones.length});
       dom.resultText.textContent = complete
         ? "¡Ganaste una baya y completaste el Gimnasio de Sistemas! Eres una Maestra de Sistemas. 🫐"
         : "¡Ganaste una baya! 🫐 Progreso guardado.";
@@ -2003,6 +2007,7 @@
   }
 
   function resetProgress() {
+    optilabResults?.cancel();
     Save.clear();
     state.defeated = {};
     state.player.bayas = 0;
@@ -2132,6 +2137,7 @@
     dom.btnResume.addEventListener("click", toggleMenu);
     dom.btnReset.addEventListener("click", resetProgress);
     dom.btnMenuTitle.addEventListener("click", () => {
+      optilabResults?.cancel();
       state.paused = false;
       dom.menuScreen.classList.add("hidden");
       Audio.stopMusic();
