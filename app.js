@@ -941,6 +941,8 @@
     init() {
       // Música y SFX como <audio>. Si no cargan, fallan en silencio.
       const make = (src, loop) => {
+        // No bundled MP3s: opt in only after installing real files.
+        if (!window.OPTIQUEST_AUDIO_FILES) return null;
         const a = new window.Audio();
         a.src = src;
         a.loop = !!loop;
@@ -1037,7 +1039,7 @@
       for (const k in this.els) {
         if (k.indexOf("Music") !== -1) {
           const el = this.els[k];
-          try { el.pause(); el.currentTime = 0; } catch (e) {}
+          try { if (!el) continue; el.pause(); el.currentTime = 0; } catch (e) {}
         }
       }
       this.current = null;
